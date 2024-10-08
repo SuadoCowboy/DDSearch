@@ -6,8 +6,9 @@ def leave():
 	sys.exit()
 
 DECORATION = '--------------------------------------'
-DUMP_PATH_HINT_FILE = 'DDNetDumpPath.txt'
-BAD_WORDS_FILE = 'DDNetDumpBadWords.txt'
+SCRIPT_PATH = os.path.dirname(sys.argv[0])
+DUMP_PATH_HINT_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpPath.txt')
+BAD_WORDS_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpBadWords.txt')
 
 if not os.path.exists(DUMP_PATH_HINT_FILE):
 	print(f'Missing "{DUMP_PATH_HINT_FILE}" file')
@@ -52,11 +53,15 @@ for file in files:
 
 output = f'{DECORATION}\nFound:\n'
 for text in results:
+	if results[text] == 0: continue	
+
 	output += f'\"{text}\"\t\t{results[text]} time'
+	
 	if results[text] != 1:
 		output += 's\n'
 	else:
 		output += '\n'
+
 output += DECORATION
 
 print(output)
