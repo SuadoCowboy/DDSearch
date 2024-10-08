@@ -23,9 +23,28 @@ with open(DUMP_PATH_HINT_FILE, 'r', encoding='utf-8') as f:
 
 	files = os.listdir(path)
 
+iterateAllDumps = False
+texts = []
 if len(sys.argv) > 1:
-	texts = [sys.argv[1]]
-else:
+	for arg in sys.argv[1:]:
+		if arg == '-a' or arg == '--all': # if should iterate through all files
+			iterateAllDumps = True
+		else:
+			texts.append(arg)
+
+if not iterateAllDumps:
+	i = 0
+	highestValue = 0.0
+	latestModifiedIdx = 0
+	for i, file in enumerate(files):
+		currentFileModificationTime = os.path.getmtime(os.path.join(path, file))
+		if currentFileModificationTime > highestValue:
+			highestValue = currentFileModificationTime
+			latestModifiedIdx = i
+	
+	files = [files[latestModifiedIdx]]
+
+if len(texts) == 0:
 	if not os.path.exists(BAD_WORDS_FILE):
 		print(f'Usage: "ddsearch <word>"\nOR: "ddsearch", which would look for a file called \"{BAD_WORDS_FILE}\" that contains bad words separated by lines')
 		leave()
