@@ -23,9 +23,8 @@ with open(DUMP_PATH_HINT_FILE, 'r', encoding='utf-8') as f:
 
 	files = os.listdir(path)
 
-texts = []
 if len(sys.argv) > 1:
-	texts.append(sys.argv[1])
+	texts = [sys.argv[1]]
 else:
 	if not os.path.exists(BAD_WORDS_FILE):
 		print(f'Usage: "ddsearch <word>"\nOR: "ddsearch", which would look for a file called \"{BAD_WORDS_FILE}\" that contains bad words separated by lines')
@@ -50,6 +49,7 @@ for file in files:
 				if text in line:
 					print(f'{DECORATION}\nFile: {file}\nLine: {idx+1}\n{line}')
 					results[text] += 1
+					print('what')
 
 output = f'{DECORATION}\nFound:\n'
 for text in results:
