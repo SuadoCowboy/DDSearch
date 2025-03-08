@@ -10,6 +10,9 @@ SCRIPT_PATH = os.path.dirname(sys.argv[0])
 DUMP_PATH_HINT_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpPath.txt')
 BAD_WORDS_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpBadWords.txt')
 
+def printHelp():
+	print(f'-a | -all\n-i | --include\n-i= | --include=\n-n | --nobadwords\n\nUsage: "ddsearch <word>"\nOR: "ddsearch",\nwhich would look for a file called \"{BAD_WORDS_FILE}\" that contains bad words separated by lines')
+
 if not os.path.exists(DUMP_PATH_HINT_FILE):
 	print(f'Missing "{DUMP_PATH_HINT_FILE}" file')
 	leave()
@@ -23,14 +26,30 @@ with open(DUMP_PATH_HINT_FILE, 'r', encoding='utf-8') as f:
 
 	files = os.listdir(path)
 
-iterateAllDumps = False
+iterateAllDumps = includeAllOptions = includeBadWords = False
 texts = []
+requiredTexts = []
 if len(sys.argv) > 1:
 	for arg in sys.argv[1:]:
 		if arg == '-a' or arg == '--all': # if should iterate through all files
 			iterateAllDumps = True
+
+		elif arg == '-i' or arg == '--include': # if should only print lines that has ALL options
+			includeAllOptions = True
+			includeBadWords = False
+
+		elif arg.startswith('-i=') or arg.startswith('--include='):
+			requiredTexts.append(arg.lower().replace('-i=','').replace('--include=',''))
+
+		elif arg == '-b' or arg == '--badwords':
+			includeBadWords = True
+
+		elif arg == '-h' or arg == '--help':
+			printHelp()
+			leave()
+
 		else:
-			texts.append(arg)
+			texts.append(arg.lower())
 
 if not iterateAllDumps:
 	i = 0
@@ -44,9 +63,9 @@ if not iterateAllDumps:
 	
 	files = [files[latestModifiedIdx]]
 
-if len(texts) == 0:
+if includeBadWords:
 	if not os.path.exists(BAD_WORDS_FILE):
-		print(f'Usage: "ddsearch <word>"\nOR: "ddsearch", which would look for a file called \"{BAD_WORDS_FILE}\" that contains bad words separated by lines')
+		printHelp()
 		leave()
 
 	with open(BAD_WORDS_FILE, 'r', encoding='utf-8') as f:
@@ -58,17 +77,31 @@ for text in texts:
 
 for file in files:
 	if not file.startswith('remote_console_dump'): continue
-
 	file = os.path.join(path, file)
 
 	with open(file, 'r', encoding='utf-8') as f:
 		content = f.read().split('\n')
 		for idx, line in enumerate(content):
+			line = line.lower()
+
+			shouldSkip = False
+			for text in requiredTexts:
+				if text not in line:
+					shouldSkip = True
+					break
+
+			if shouldSkip:
+				continue
+
 			for text in texts:
-				if text in line:
-					print(f'{DECORATION}\nFile: {file}\nLine: {idx+1}\n{line}')
-					results[text] += 1
-					print('what')
+				if not text in line:
+					if includeAllOptions:
+						break
+					else:
+						continue
+
+				print(f'{DECORATION}\nFile: {file}\nLine: {idx+1}\n{line}')
+				results[text] += 1
 
 output = f'{DECORATION}\nFound:\n'
 for text in results:
