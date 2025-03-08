@@ -6,7 +6,7 @@ def leave():
 	sys.exit()
 
 DECORATION = '--------------------------------------'
-SCRIPT_PATH = os.path.dirname(sys.argv[0])
+SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 DUMP_PATH_HINT_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpPath.txt')
 BAD_WORDS_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpBadWords.txt')
 
