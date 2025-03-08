@@ -11,7 +11,7 @@ DUMP_PATH_HINT_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpPath.txt')
 BAD_WORDS_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpBadWords.txt')
 
 def printHelp():
-	print(f'-a | -all\n-i | --include\n-i= | --include=\n-n | --nobadwords\n\nUsage: "ddsearch <word>"\nOR: "ddsearch",\nwhich would look for a file called \"{BAD_WORDS_FILE}\" that contains bad words separated by lines')
+	print(f'-a | -all\n-i | --include\n-i= | --include=\n-b | --badwords\n\nUsage: "ddsearch <word>"\nOR: "ddsearch",\nwhich would look for a file called \"{BAD_WORDS_FILE}\" that contains bad words separated by lines')
 
 if not os.path.exists(DUMP_PATH_HINT_FILE):
 	print(f'Missing "{DUMP_PATH_HINT_FILE}" file')
@@ -63,7 +63,7 @@ if not iterateAllDumps:
 	
 	files = [files[latestModifiedIdx]]
 
-if includeBadWords:
+if includeBadWords or len(texts) == 0:
 	if not os.path.exists(BAD_WORDS_FILE):
 		printHelp()
 		leave()
