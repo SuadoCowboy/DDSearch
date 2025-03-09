@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/emilly/Documents/Lucca/Projetos/Python/automation/DDNetDumpSearcher/DDNetDumpSearcher.py"
+   "value": "C:/Users/emilly/Documents/Lucca/Projetos/Python/automation/DDSearch/DDSearch.py"
   },
   {
    "optionDest": "onefile",
@@ -23,7 +23,7 @@
   },
   {
    "optionDest": "name",
-   "value": "DDNetDumpSearcher"
+   "value": "DDSearch"
   },
   {
    "optionDest": "clean_build",
