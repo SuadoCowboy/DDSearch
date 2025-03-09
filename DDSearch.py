@@ -72,7 +72,7 @@ if includeBadWords or len(texts) == 0:
 		leave()
 
 	with open(BAD_WORDS_FILE, 'r', encoding='utf-8') as f:
-		texts = f.read().split('\n')
+		texts = texts + f.read().split('\n')
 
 results = {}
 for text in texts:
