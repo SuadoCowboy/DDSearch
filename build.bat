@@ -5,9 +5,8 @@ cd %~dp0output
 
 pyinstaller --noconfirm --onedir --console --icon "..\icon.ico" --name "DDSearch" "..\DDSearch.py"
 
+rmdir /s /q DDSearch
 cd dist
 move DDSearch ../..
 cd ../..
-rmdir /s /q bin
-rename DDSearch bin
 rmdir /s /q output
