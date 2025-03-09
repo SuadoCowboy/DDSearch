@@ -110,12 +110,7 @@ output = f'{DECORATION}\nFound:\n'
 for text in results:
 	if results[text] == 0: continue	
 
-	output += f'\"{text}\"\t\t{results[text]} time'
-
-	if results[text] != 1:
-		output += 's\n'
-	else:
-		output += '\n'
+	output += f'\"{text}\"\t\t{results[text]} time(s)\n'
 
 output += DECORATION
 
