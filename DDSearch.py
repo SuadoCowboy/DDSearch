@@ -30,8 +30,8 @@ with open(DUMP_PATH_HINT_FILE, 'r', encoding='utf-8') as f:
 	files = os.listdir(path)
 
 iterateAllDumps = includeAllOptions = includeBadWords = False
-texts = []
-requiredTexts = []
+texts: list[str] = []
+requiredTexts: list[str] = []
 if len(sys.argv) > 1:
 	for arg in sys.argv[1:]:
 		if arg == '-a' or arg == '--all': # if should iterate through all files
@@ -43,6 +43,7 @@ if len(sys.argv) > 1:
 
 		elif arg.startswith('-i=') or arg.startswith('--include='):
 			requiredTexts.append(arg.lower().replace('-i=','').replace('--include=',''))
+			texts.append(requiredTexts[-1])
 
 		elif arg == '-b' or arg == '--badwords':
 			includeBadWords = True
