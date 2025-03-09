@@ -7,6 +7,9 @@ def leave():
 
 DECORATION = '--------------------------------------'
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+if SCRIPT_PATH.endswith('_internal'):
+	SCRIPT_PATH += '/..'
+
 DUMP_PATH_HINT_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpPath.txt')
 BAD_WORDS_FILE = os.path.join(SCRIPT_PATH, 'DDNetDumpBadWords.txt')
 
@@ -108,7 +111,7 @@ for text in results:
 	if results[text] == 0: continue	
 
 	output += f'\"{text}\"\t\t{results[text]} time'
-	
+
 	if results[text] != 1:
 		output += 's\n'
 	else:
