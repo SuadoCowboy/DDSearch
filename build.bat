@@ -1,12 +1,15 @@
 @echo off
 
-mkdir %~dp0output
-cd %~dp0output
-
-pyinstaller --noconfirm --onedir --console --icon "..\icon.ico" --name "DDSearch" "..\DDSearch.py"
-
-rmdir /s /q DDSearch
-cd dist
-move DDSearch ../..
-cd ../..
+cd "%~dp0"
 rmdir /s /q output
+mkdir output
+cd output
+
+pyinstaller --noconfirm --onedir --console --icon "..\icon.ico" --paths ddsearch/lib/site-packages --name "DDSearch" "..\DDSearch.py"
+
+cd dist
+move DDSearch ../
+cd ..
+rmdir /s /q build
+rmdir /s /q dist
+del DDSearch.spec
