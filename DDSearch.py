@@ -1,5 +1,9 @@
 import sys
 import os
+from colorama import init as initTermColor
+from termcolor import cprint
+
+initTermColor()
 
 def leave():
 	input('Press ENTER to continue...')
@@ -98,13 +102,17 @@ for file in files:
 				continue
 
 			for text in texts:
-				if not text in line:
+				textIndex = line.find(text)
+				if textIndex == -1:
 					if includeAllOptions:
 						break
 					else:
 						continue
 
-				print(f'{DECORATION}\nFile: {file}\nLine: {idx+1}\n{line}')
+				print(f'{DECORATION}\nFile: {file}\nLine: {idx+1}')
+				cprint(line[:textIndex], "light_green", end='')
+				cprint(text, "light_red", end='')
+				cprint(line[textIndex+len(text):], "light_green")
 				results[text] += 1
 
 output = f'{DECORATION}\nFound:\n'
