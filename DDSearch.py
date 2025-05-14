@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 import os
 from colorama import init as initTermColor
@@ -25,8 +26,8 @@ if not os.path.exists(DUMP_PATH_HINT_FILE):
 	leave()
 
 with open(DUMP_PATH_HINT_FILE, 'r', encoding='utf-8') as f:
-	path = os.path.expandvars(f.read())
-	
+	path = os.path.expandvars(f.read()).strip()
+
 	if path == None or not os.path.exists(path):
 		print(f'"{path}" does not exist')
 		leave()
@@ -68,7 +69,11 @@ if not iterateAllDumps:
 		if currentFileModificationTime > highestValue:
 			highestValue = currentFileModificationTime
 			latestModifiedIdx = i
-	
+
+	if len(files) == 0:
+		print("Missing remote_console_dump.txt files")
+		leave()
+
 	files = [files[latestModifiedIdx]]
 
 if includeBadWords or len(texts) == 0:
